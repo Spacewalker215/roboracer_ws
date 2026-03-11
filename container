@@ -86,7 +86,7 @@ CONTAINER_NAME_FILE=$ROOT/config/name
 # If no custom name provided via command line, try to load from file
 if [ -z "$CONTAINER_NAME" ]; then
   if test -f "$CONTAINER_NAME_FILE"; then
-    CONTAINER_NAME="$(cat $CONTAINER_NAME_FILE)"
+    CONTAINER_NAME="${_UNAME}_$(cat $CONTAINER_NAME_FILE)"
     # echo "Container name loaded from $CONTAINER_NAME_FILE: $CONTAINER_NAME"
   fi
 fi
