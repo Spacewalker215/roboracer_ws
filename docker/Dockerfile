@@ -526,18 +526,19 @@ RUN --mount=type=cache,target=/root/.cache/pip pip3 install \
 # =============================================================================
 # Pre-populate UV Environment for Simulator
 # =============================================================================
-RUN if [ "$is_jetson" = "false" ]; then \
-    RUN --mount=type=cache,target=/root/.cache/uv mkdir -p /tmp/simulator_deps /home/${USERNAME}/.venv-simulator && cd /tmp/simulator_deps && \
-        curl -sSL -o pyproject.toml https://raw.githubusercontent.com/ut-av/simulator/master/pyproject.toml && \
-        curl -sSL -o uv.lock https://raw.githubusercontent.com/ut-av/simulator/master/uv.lock || true && \
-        sed -i 's/>=3.11/>=3.10/g' pyproject.toml && \
-        sed -i 's/tensorboard>=2.20.0/tensorboard>=2.14.0/g' pyproject.toml && \
-        sed -i 's/scipy>=1.16.3/scipy>=1.11.0/g' pyproject.toml && \
-        uv venv --system-site-packages --python /usr/bin/python3 /home/${USERNAME}/.venv-simulator && \
-        UV_PROJECT_ENVIRONMENT=/home/${USERNAME}/.venv-simulator uv sync --no-install-project && \
-        (chown -R ${UID}:${GID} /home/${USERNAME}/.venv-simulator || true) && \
-        chmod -R a+rwX /home/${USERNAME}/.venv-simulator && \
-        rm -rf /tmp/simulator_deps \
+RUN --mount=type=cache,target=/root/.cache/uv \
+if [ "$is_jetson" = "false" ]; then \
+    mkdir -p /tmp/simulator_deps /home/${USERNAME}/.venv-simulator && cd /tmp/simulator_deps && \
+    curl -sSL -o pyproject.toml https://raw.githubusercontent.com/ut-av/simulator/master/pyproject.toml && \
+    curl -sSL -o uv.lock https://raw.githubusercontent.com/ut-av/simulator/master/uv.lock || true && \
+    sed -i 's/>=3.11/>=3.10/g' pyproject.toml && \
+    sed -i 's/tensorboard>=2.20.0/tensorboard>=2.14.0/g' pyproject.toml && \
+    sed -i 's/scipy>=1.16.3/scipy>=1.11.0/g' pyproject.toml && \
+    uv venv --system-site-packages --python /usr/bin/python3 /home/${USERNAME}/.venv-simulator && \
+    UV_PROJECT_ENVIRONMENT=/home/${USERNAME}/.venv-simulator uv sync --no-install-project && \
+    (chown -R ${UID}:${GID} /home/${USERNAME}/.venv-simulator || true) && \
+    chmod -R a+rwX /home/${USERNAME}/.venv-simulator && \
+    rm -rf /tmp/simulator_deps; \
 fi
 
 # =============================================================================
