@@ -19,10 +19,18 @@ CONTAINER_NAME=""
 CMD_TO_RUN=""
 HOST_FLAGS=""
 IS_PODMAN=0
-if docker --version 2>/dev/null | grep -qi "podman"; then
-  IS_PODMAN=1
-  echo "Podman detected. Adding --userns=keep-id for rootless support."
-  HOST_FLAGS+=" --userns=keep-id --shm-size=16"
+DOCKER_BIN=$(command -v docker)
+if [ -n "$DOCKER_BIN" ]; then
+  # 1. Check if the docker binary is actually a symlink to podman
+  if realpath "$DOCKER_BIN" | grep -qi "podman"; then
+    IS_PODMAN=1
+  elif docker --version 2>/dev/null | grep -qi "podman"; then
+    IS_PODMAN=1
+  fi
+  if [[ "$IS_PODMAN" == 1 ]]; then
+    echo "Podman detected. Adding --userns=keep-id for rootless support."
+    HOST_FLAGS+=" --userns=keep-id --shm-size=16"
+  fi
 fi
 
 # Auto-detect platform for informational purposes
