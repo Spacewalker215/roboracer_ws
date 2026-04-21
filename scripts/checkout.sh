@@ -67,13 +67,13 @@ else
     else
         echo "Downloading simulator release..."
         mkdir -p "$SIM_BUILD_DIR"
-        curl -L -o /tmp/simulator.zip "https://github.com/Spacewalker215/simulator/releases/download/v2.0.7/linux.zip"
+        curl -L -o /tmp/simulator_$USER.zip "https://github.com/Spacewalker215/simulator/releases/download/v2.0.7/linux.zip"
         while ! command -v unzip >/dev/null 2>&1; do
             echo "Error: unzip is not installed. Run 'sudo apt install unzip' to install. Then, re-run this script."
             exit 1
         done
-        unzip -o /tmp/simulator.zip -d "$SIM_BUILD_DIR"
-        rm /tmp/simulator.zip
+        unzip -o /tmp/simulator_$USER.zip -d "$SIM_BUILD_DIR"
+        rm /tmp/simulator_$USER.zip
     fi
     clone_or_pull master https://github.com/ut-av/av_sim.git av_sim
 
