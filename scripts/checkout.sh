@@ -67,7 +67,7 @@ else
     else
         echo "Downloading simulator release..."
         mkdir -p "$SIM_BUILD_DIR"
-        curl -L -o /tmp/simulator.zip "https://github.com/ut-av/simulator/releases/download/v1.0.0/linux.zip"
+        curl -L -o /tmp/simulator.zip "https://github.com/Spacewalker215/simulator/releases/download/v2.0.7/linux.zip"
         while ! command -v unzip >/dev/null 2>&1; do
             echo "Error: unzip is not installed. Run 'sudo apt install unzip' to install. Then, re-run this script."
             exit 1
@@ -79,7 +79,7 @@ else
 
     # the simulator project is unique in that it is checked out into the ~/roboracer_ws/simulator directory, which will already contain the simulator binary
     SIM_REPO_DIR="$PROJECT_ROOT/simulator"
-    SIM_REPO_URL="https://github.com/ut-av/simulator.git"
+    SIM_REPO_URL="https://github.com/Spacewalker215/simulator.git"
     if [ -d "$SIM_REPO_DIR/.git" ]; then
         echo "Pulling latest changes for $SIM_REPO_DIR"
         cd "$SIM_REPO_DIR"
